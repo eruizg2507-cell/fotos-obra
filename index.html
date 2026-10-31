@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Fotos de obra · Albamar</title>
+<meta name="theme-color" content="#082a5a">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+:root{--navy:#082a5a;--gold:#c9a227;--sun:#f4c430;--bg:#f3f5f7;--card:#fff;--ink:#16212c;--muted:#5b6876;--line:#d5dce3;--ok:#1f9d63;--warn:#b9770e}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{position:sticky;top:0;z-index:5;background:var(--navy);color:#fff;padding:calc(10px + env(safe-area-inset-top)) 16px 10px;display:flex;align-items:center;gap:12px}
+header img{height:30px;background:#fff;border-radius:6px;padding:3px 6px}
+header h1{font-size:18px;margin:0;flex:1}
+header button{background:none;border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;padding:6px 10px;font:inherit;font-size:14px}
+main{padding:14px 16px 120px;max-width:620px;margin:0 auto}
+h2{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:18px 0 8px}
+.obras{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.obra{border:2px solid var(--line);background:var(--card);border-radius:14px;padding:16px 10px;font:700 18px system-ui;color:var(--navy);letter-spacing:.04em}
+.obra.on{border-color:var(--navy);background:var(--navy);color:#fff;box-shadow:inset 0 -5px 0 var(--sun)}
+.cam{display:flex;gap:10px;margin-top:16px}
+.cam label{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-radius:16px;padding:18px 8px;font-weight:700;text-align:center}
+.cam .shot{background:var(--gold);color:#1c2024;font-size:19px;flex:1.6}
+.cam .shot span{font-size:34px}
+.cam .gal{background:var(--card);border:2px solid var(--line);color:var(--navy);font-size:15px}
+.cam .dis{opacity:.4;pointer-events:none}
+input[type=file]{display:none}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:12px}
+.ph{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px}
+.ph figure{margin:0;flex:none;position:relative}
+.ph img{width:110px;height:110px;object-fit:cover;border-radius:10px;display:block}
+.ph figcaption{font-size:11px;color:var(--muted);max-width:110px}
+.ph .x{position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;border:0;background:rgba(0,0,0,.6);color:#fff;font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font:inherit;font-size:14px;color:var(--ink)}
+.chip.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.f{display:flex;flex-direction:column;gap:4px;margin-top:10px;font-size:13px;color:var(--muted)}
+.f input{border:1px solid var(--line);border-radius:10px;padding:11px 12px;font:inherit;font-size:16px;color:var(--ink);background:#fff}
+.row{display:flex;gap:10px}.row .f{flex:1}
+.dest{border-left:5px solid var(--gold);background:#fffbea}
+.dest b{color:var(--navy)}
+.path{font:600 15px ui-monospace,Menlo,Consolas,monospace;color:var(--navy);word-break:break-word;margin:4px 0}
+.nm{font:12px ui-monospace,Menlo,Consolas,monospace;color:var(--muted);word-break:break-all}
+.go{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--bg) 30%)}
+.go button{width:100%;max-width:620px;display:block;margin:0 auto;background:var(--navy);color:#fff;border:0;border-radius:16px;padding:18px;font:700 18px system-ui;box-shadow:0 6px 18px rgba(8,42,90,.3)}
+.go button:disabled{opacity:.4}
+.hist{display:flex;flex-direction:column;gap:8px}
+.hist div{display:flex;gap:10px;align-items:center;font-size:13px}
+.hist img{width:46px;height:46px;border-radius:8px;object-fit:cover}
+.hist b{display:block;font-size:13.5px}
+.small{font-size:12.5px;color:var(--muted)}
+.ok{color:var(--ok)}.warn{color:var(--warn)}
+.toast{position:fixed;left:16px;right:16px;bottom:96px;background:var(--navy);color:#fff;border-radius:12px;padding:12px 14px;font-size:15px;text-align:center;z-index:20}
+.modal{position:fixed;inset:0;background:rgba(10,16,28,.55);z-index:30;display:flex;align-items:flex-end}
+.sheet{background:#fff;width:100%;border-radius:18px 18px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));max-height:88vh;overflow:auto}
+.sheet h3{margin:0 0 8px}
+.ol{display:flex;flex-direction:column;gap:6px}
+.ol div{display:flex;gap:8px}.ol input{flex:1;border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit}
+.ol button,.btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 12px;font:inherit}
+.btn.pri{background:var(--navy);color:#fff;border-color:var(--navy)}
+.seg{display:flex;flex-direction:column;gap:8px}
+.seg label{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:10px}
+.seg input{margin-top:4px;width:20px;height:20px}
+</style>
+</head>
+<body>
+<header><img src="logo.png" alt="Albamar"><h1>Fotos de obra</h1><button type="button" id="cfgB">⚙ Ajustes</button></header>
+<main>
+  <h2>1 · Obra</h2>
+  <div class="obras" id="obras"></div>
+  <h2>2 · Foto</h2>
+  <div class="cam" id="cam">
+    <label class="shot" for="inCam"><span>📷</span>Tomar foto</label>
+    <label class="gal" for="inGal"><span style="font-size:24px">🖼</span>De la galería</label>
+  </div>
+  <input type="file" id="inCam" accept="image/*" capture="environment">
+  <input type="file" id="inGal" accept="image/*" multiple>
+  <div id="sel"></div>
+  <h2>Enviadas hoy</h2>
+  <div class="card"><div class="hist" id="hist"></div></div>
+</main>
+<div class="go"><button type="button" id="go" disabled>Guardar en OneDrive</button></div>
+<script>
+const $=id=>document.getElementById(id);
+const KEY='albamar_fotos_app_v1';
+const ETAPAS=['Excavación','Muros anclados','Subestructura','Superestructura','Albañilería','Instalaciones','Acabados','Exteriores','Seguridad','Otros'];
+let S;try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+if(!S)S={obras:['OASIS','BRISANA','MIRALBA','VIBRANT','BEA','MOVE'],obra:null,modo:'entrada',hist:[]};
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){S.hist=S.hist.slice(-10);try{localStorage.setItem(KEY,JSON.stringify(S))}catch(x){}}};
+let fotos=[],etapa='',ubic='',desc='';
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const two=n=>String(n).padStart(2,'0'),dia=d=>`${d.getFullYear()}${two(d.getMonth()+1)}${two(d.getDate())}`,hh=d=>`${two(d.getHours())}h${two(d.getMinutes())}`;
+const limpio=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[\\/:*?"<>|#%&{}$!'@+`=]/g,'').replace(/\s+/g,' ').trim().slice(0,60);
+const nomObra=o=>limpio(o).toUpperCase().replace(/\s+/g,'_');
+function nombre(f,i){return `${nomObra(S.obra)}_${dia(f.fecha)}_${hh(f.fecha)}${etapa?'_'+limpio(etapa):''}${ubic?'_'+limpio(ubic):''}${desc?'_'+limpio(desc):''}${fotos.length>1?'_'+two(i+1):''}.jpg`}
+let tt=0;function toast(t){let d=document.querySelector('.toast');if(!d){d=document.createElement('div');d.className='toast';document.body.appendChild(d)}d.textContent=t;d.hidden=false;clearTimeout(tt);tt=setTimeout(()=>d.hidden=true,3500)}
+// fecha real de la toma (EXIF); si no hay, la hora actual
+async function exif(file){try{const v=new DataView(await file.slice(0,262144).arrayBuffer());if(v.getUint16(0)!==0xFFD8)return null;let o=2;
+  while(o+4<v.byteLength){const m=v.getUint16(o),len=v.getUint16(o+2);if(m===0xFFE1&&v.getUint32(o+4)===0x45786966){const t=o+10,le=v.getUint16(t)===0x4949,u16=x=>v.getUint16(x,le),u32=x=>v.getUint32(x,le);
+    const find=(ifd,w)=>{const n=u16(t+ifd);for(let i=0;i<n;i++){const e=t+ifd+2+i*12;if(u16(e)===w)return e}return null};
+    const txt=e=>{const c=u32(e+4),off=c>4?t+u32(e+8):e+8;let r='';for(let i=0;i<c-1;i++)r+=String.fromCharCode(v.getUint8(off+i));return r};
+    const i0=u32(t+4);let ds=null;const ep=find(i0,0x8769);if(ep){const ex=u32(ep+8);const e1=find(ex,0x9003)||find(ex,0x9004);if(e1)ds=txt(e1)}if(!ds){const e2=find(i0,0x0132);if(e2)ds=txt(e2)}
+    const mm=ds&&ds.match(/^(\d{4}):(\d{2}):(\d{2})[ T](\d{2}):(\d{2})/);return mm&&mm[1]!=='0000'?new Date(+mm[1],+mm[2]-1,+mm[3],+mm[4],+mm[5]):null}
+    if((m&0xFF00)!==0xFF00)break;o+=2+len}}catch(e){}return null}
+function thumb(file,max){return new Promise(res=>{const u=URL.createObjectURL(file),im=new Image();im.onload=()=>{const k=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL('image/jpeg',.7))};im.onerror=()=>{URL.revokeObjectURL(u);res('')};im.src=u})}
+function destino(){const f=fotos[0];return f?(S.modo==='entrada'?'FOTOS › _POR ORDENAR':`FOTOS › ${nomObra(S.obra)} › ${dia(f.fecha)}`):''}
+function draw(){
+  $('obras').innerHTML=S.obras.map(o=>`<button type="button" class="obra ${o===S.obra?'on':''}" data-o="${esc(o)}">${esc(o)}</button>`).join('');
+  document.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{S.obra=b.dataset.o;save();draw()});
+  document.querySelectorAll('.cam label').forEach(l=>l.classList.toggle('dis',!S.obra));
+  const sel=$('sel');
+  if(!fotos.length){sel.innerHTML=S.obra?'':'<p class="small">Elige primero la obra.</p>'}
+  else sel.innerHTML=`<div class="card"><div class="ph">${fotos.map((f,i)=>`<figure><img src="${f.prev}" alt=""><button type="button" class="x" data-x="${i}">✕</button><figcaption class="${f.ex?'ok':'warn'}">${f.ex?'📷 ':'⚠ '}${two(f.fecha.getDate())}/${two(f.fecha.getMonth()+1)} ${two(f.fecha.getHours())}:${two(f.fecha.getMinutes())}</figcaption></figure>`).join('')}</div>
+    <div class="f">Etapa (opcional)<div class="chips">${ETAPAS.map(e=>`<button type="button" class="chip ${e===etapa?'on':''}" data-e="${e}">${e}</button>`).join('')}</div></div>
+    <div class="row"><label class="f">Piso / sector<input id="ub" value="${esc(ubic)}" placeholder="P5 S2"></label></div>
+    <label class="f">Descripción (opcional)<input id="de" value="${esc(desc)}" placeholder="Vaciado de losa"></label></div>
+    <div class="card dest"><div class="small">Al tocar <b>Guardar en OneDrive</b>, elige <b>OneDrive</b> y guárdala en:</div><div class="path">${esc(destino())}</div>
+    ${S.modo==='entrada'?'<div class="small">El Tablero las pasa solo a la carpeta de su obra y de su día (FOTOS › OBRA › AAAAMMDD).</div>':'<div class="small">Si la carpeta del día no existe, créala desde la pantalla de OneDrive.</div>'}
+    <div class="nm" id="nm">${fotos.map((f,i)=>esc(nombre(f,i))).join('<br>')}</div></div>`;
+  sel.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{fotos.splice(+b.dataset.x,1);draw()});
+  sel.querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>{etapa=etapa===b.dataset.e?'':b.dataset.e;draw()});
+  const ub=$('ub'),de=$('de');if(ub){ub.oninput=()=>{ubic=ub.value;$('nm').innerHTML=fotos.map((f,i)=>esc(nombre(f,i))).join('<br>')};de.oninput=()=>{desc=de.value;$('nm').innerHTML=fotos.map((f,i)=>esc(nombre(f,i))).join('<br>')}}
+  $('go').disabled=!(S.obra&&fotos.length);$('go').textContent=fotos.length>1?`Guardar ${fotos.length} fotos en OneDrive`:'Guardar en OneDrive';
+  const hoy=dia(new Date()),H=S.hist.filter(h=>h.d===hoy).reverse();
+  $('hist').innerHTML=H.length?H.map(h=>`<div>${h.t?`<img src="${h.t}" alt="">`:''}<span><b>${esc(h.o)}</b><span class="small">${esc(h.n)}</span></span></div>`).join(''):'<span class="small">Aún no envías fotos hoy.</span>'}
+async function add(files){for(const file of files){if(!/^image\//.test(file.type||'image/'))continue;const ex=await exif(file);fotos.push({file,fecha:ex||new Date(),ex:!!ex,prev:await thumb(file,300)})}draw();scrollTo(0,document.body.scrollHeight)}
+$('inCam').onchange=e=>{add([...e.target.files]);e.target.value=''};$('inGal').onchange=e=>{add([...e.target.files]);e.target.value=''};
+$('go').onclick=async()=>{if(!fotos.length)return;
+  const files=fotos.map((f,i)=>new File([f.file],nombre(f,i),{type:f.file.type||'image/jpeg'}));
+  try{
+    if(navigator.canShare&&navigator.canShare({files})){await navigator.share({files,title:`Fotos ${S.obra}`})}
+    else{files.forEach(f=>{const u=URL.createObjectURL(f),a=document.createElement('a');a.href=u;a.download=f.name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)});toast('Este navegador no permite compartir: las fotos se descargaron con su nombre.')}
+    const d=dia(new Date());for(let i=0;i<fotos.length;i++)S.hist.push({d,o:S.obra,n:files[i].name,t:await thumb(fotos[i].file,90)});S.hist=S.hist.filter(h=>h.d===d).slice(-40);save();
+    fotos=[];desc='';ubic='';toast('Listo. Revisa que haya quedado en OneDrive.');draw()
+  }catch(e){if(e&&e.name==='AbortError')toast('No se guardó: cancelaste el envío.');else toast('No se pudo compartir la foto.')}};
+// ajustes: obras y forma de guardar
+$('cfgB').onclick=()=>{const m=document.createElement('div');m.className='modal';
+  const pinta=()=>{m.innerHTML=`<div class="sheet"><h3>Ajustes</h3>
+    <h2>Dónde guardar</h2><div class="seg">
+      <label><input type="radio" name="md" value="entrada" ${S.modo==='entrada'?'checked':''}><span><b>Siempre en FOTOS › _POR ORDENAR</b> (recomendado)<br><span class="small">OneDrive recuerda la carpeta y no tienes que buscarla. Luego el Tablero, en la PC, pasa cada foto a la carpeta de su obra y de su día.</span></span></label>
+      <label><input type="radio" name="md" value="obra" ${S.modo==='obra'?'checked':''}><span><b>Directo en FOTOS › OBRA › AAAAMMDD</b><br><span class="small">Eliges tú la carpeta de la obra y del día en la pantalla de OneDrive.</span></span></label></div>
+    <h2>Obras</h2><div class="ol">${S.obras.map((o,i)=>`<div><input data-i="${i}" value="${esc(o)}"><button type="button" data-d="${i}">✕</button></div>`).join('')}<button type="button" id="oAdd">＋ Agregar obra</button></div>
+    <div style="display:flex;gap:8px;margin-top:16px"><button type="button" class="btn pri" id="oOk" style="flex:1">Listo</button></div></div>`;
+    m.querySelectorAll('[name=md]').forEach(r=>r.onchange=()=>{S.modo=r.value;save()});
+    m.querySelectorAll('[data-i]').forEach(i=>i.oninput=()=>{const o=S.obras[+i.dataset.i];S.obras[+i.dataset.i]=i.value.toUpperCase();if(S.obra===o)S.obra=S.obras[+i.dataset.i];save()});
+    m.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{S.obras.splice(+b.dataset.d,1);save();pinta()});
+    m.querySelector('#oAdd').onclick=()=>{S.obras.push('NUEVA OBRA');save();pinta()};
+    m.querySelector('#oOk').onclick=()=>{S.obras=S.obras.map(o=>o.trim()).filter(Boolean);if(!S.obras.includes(S.obra))S.obra=null;save();m.remove();draw()}};
+  pinta();document.body.appendChild(m)};
+draw();
+if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+</script>
+</body>
+</html>
